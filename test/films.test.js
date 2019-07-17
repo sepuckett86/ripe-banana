@@ -50,12 +50,14 @@ describe('studio routes', () => {
         }]
       })
       .then(res => {
+        console.log(res.body);
         expect(res.body).toEqual({
           _id: expect.any(String),
           title: 'Awesome Sauce',
           studio: studio._id.toString(),
           released: 1990,
           cast: [{
+            _id: expect.any(String),
             role: 'Derrick Strong',
             actor: actor._id.toString()
           }],
