@@ -38,23 +38,21 @@ describe('studio routes', () => {
       });
   });
 
-  // it('gets studios', async() => {
-  //   const studio = await Studio.create({
-  //     name: 'Firefly Studio',
-  //     address: {
-  //       city: 'Los Angeles',
-  //       state: 'California',
-  //       country: 'United States'
-  //     }
-  //   });
+  it('gets actors', async() => {
+    const actor = await Actor.create({
+      name: 'Leonardo DiCaprio',
+      dob: new Date('November 11, 1974'),
+      pob: 'Hollywood, California'
+    });
 
-  //   return request(app)
-  //     .get('/api/v1/studios')
-  //     .then(res => {
-  //       const studioCleaned = JSON.parse(JSON.stringify(studio));
-  //       expect(res.body).toEqual([studioCleaned]);
-  //     });
-  // });
+    return request(app)
+      .get('/api/v1/actors')
+      .then(res => {
+        const actorCleaned = JSON.parse(JSON.stringify(actor));
+        expect(res.body).toEqual([actorCleaned]);
+      });
+  });
+  
   // it('gets studio by id', async() => {
   //   const studio = await Studio.create({
   //     name: 'Firefly Studio',
