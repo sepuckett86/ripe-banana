@@ -66,20 +66,41 @@ describe('studio routes', () => {
         expect(res.body).toEqual(actorCleaned);
       });
   });
-  // it('deletes studio', async() => {
-  //   const studio = await Studio.create({
-  //     name: 'Firefly Studio',
-  //     address: {
-  //       city: 'Los Angeles',
-  //       state: 'California',
-  //       country: 'United States'
-  //     }
-  //   });
-  //   return request(app)
-  //     .delete(`/api/v1/studios/${studio._id}`)
-  //     .then(res => {
-  //       const studioCleaned = JSON.parse(JSON.stringify(studio));
-  //       expect(res.body).toEqual(studioCleaned);
-  //     });
-  // });
+  it('updates actor', async() => {
+    const actor = await Actor.create({
+      name: 'Leonardo DiCaprio',
+      dob: new Date('November 11, 1974'),
+      pob: 'Hollywood, California'
+    });
+    return request(app)
+      .put(`/api/v1/actors/${actor._id}`)
+      .send({
+        name: 'Ellen Page',
+        dob: new Date('February 21, 1987'),
+        pob: 'Halifax, Nova Scotia'
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          name: 'Ellen Page',
+          dob: new Date('February 21, 1987'),
+          pob: 'Halifax, Nova Scotia',
+          __v: 0
+        });
+      });
+  });
+  
+  it('deletes actor', async() => {
+    const actor = await Actor.create({
+      name: 'Leonardo DiCaprio',
+      dob: new Date('November 11, 1974'),
+      pob: 'Hollywood, California'
+    });
+    return request(app)
+      .delete(`/api/v1/actors/${actor._id}`)
+      .then(res => {
+        const actorCleaned = JSON.parse(JSON.stringify(actor));
+        expect(res.body).toEqual(actorCleaned);
+      });
+  });
 });
