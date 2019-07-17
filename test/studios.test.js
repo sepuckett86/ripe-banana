@@ -77,4 +77,20 @@ describe('studio routes', () => {
         expect(res.body).toEqual(studioCleaned);
       });
   });
+  it('deletes studio', async() => {
+    const studio = await Studio.create({
+      name: 'Firefly Studio',
+      address: {
+        city: 'Los Angeles',
+        state: 'California',
+        country: 'United States'
+      }
+    });
+    return request(app)
+      .delete(`/api/v1/studios/${studio._id}`)
+      .then(res => {
+        const studioCleaned = JSON.parse(JSON.stringify(studio));
+        expect(res.body).toEqual(studioCleaned);
+      });
+  });
 });
