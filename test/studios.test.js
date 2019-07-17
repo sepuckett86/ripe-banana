@@ -61,4 +61,20 @@ describe('studio routes', () => {
         expect(res.body).toEqual([studioCleaned]);
       });
   });
+  it('gets studio by id', async() => {
+    const studio = await Studio.create({
+      name: 'Firefly Studio',
+      address: {
+        city: 'Los Angeles',
+        state: 'California',
+        country: 'United States'
+      }
+    });
+    return request(app)
+      .get(`/api/v1/${studio._id}`)
+      .then(res => {
+        const studioCleaned = JSON.parse(JSON.stringify(studio));
+        expect(res.body).toEqual(studioCleaned);
+      })
+  })
 });
