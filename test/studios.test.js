@@ -71,10 +71,10 @@ describe('studio routes', () => {
       }
     });
     return request(app)
-      .get(`/api/v1/${studio._id}`)
+      .get(`/api/v1/studios/${studio._id}`)
       .then(res => {
         const studioCleaned = JSON.parse(JSON.stringify(studio));
         expect(res.body).toEqual(studioCleaned);
-      })
-  })
+      });
+  });
 });
