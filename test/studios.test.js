@@ -38,7 +38,7 @@ describe('studio routes', () => {
             state: 'California',
             country: 'United States'
           },
-          __v: expect.any(String)
+          __v: 0
         });
       });
   });
