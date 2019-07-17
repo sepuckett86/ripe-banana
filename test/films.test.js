@@ -6,7 +6,7 @@ const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 const Studio = require('../lib/models/Studio');
 const Actor = require('../lib/models/Actor');
-// const Film = require('../lib/models/Film');
+const Film = require('../lib/models/Film');
 
 describe('studio routes', () => {
   beforeAll(() => {
@@ -50,7 +50,6 @@ describe('studio routes', () => {
         }]
       })
       .then(res => {
-        console.log(res.body);
         expect(res.body).toEqual({
           _id: expect.any(String),
           title: 'Awesome Sauce',
@@ -66,23 +65,24 @@ describe('studio routes', () => {
       });
   });
 
-  // it('gets studios', async() => {
-  //   const studio = await Studio.create({
-  //     name: 'Firefly Studio',
-  //     address: {
-  //       city: 'Los Angeles',
-  //       state: 'California',
-  //       country: 'United States'
-  //     }
-  //   });
+  it('gets films', async() => {
+    const film = await Film.create({
+      title: 'Awesome Sauce',
+      studio: studio._id,
+      released: 1990,
+      cast: [{
+        role: 'Derrick Strong',
+        actor: actor._id
+      }]
+    });
 
-  //   return request(app)
-  //     .get('/api/v1/studios')
-  //     .then(res => {
-  //       const studioCleaned = JSON.parse(JSON.stringify(studio));
-  //       expect(res.body).toEqual([studioCleaned]);
-  //     });
-  // });
+    return request(app)
+      .get('/api/v1/films')
+      .then(res => {
+        const filmCleaned = JSON.parse(JSON.stringify(film));
+        expect(res.body).toEqual([filmCleaned]);
+      });
+  });
   // it('gets studio by id', async() => {
   //   const studio = await Studio.create({
   //     name: 'Firefly Studio',
