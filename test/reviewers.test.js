@@ -59,7 +59,7 @@ describe('studio routes', () => {
       .get(`/api/v1/reviewers/${reviewer._id}`)
       .then(res => {
         const reviewerCleaned = JSON.parse(JSON.stringify(reviewer));
-        expect(res.body).toEqual([reviewerCleaned]);
+        expect(res.body).toEqual(reviewerCleaned);
       });
   });
 
