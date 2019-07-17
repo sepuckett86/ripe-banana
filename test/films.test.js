@@ -83,36 +83,40 @@ describe('studio routes', () => {
         expect(res.body).toEqual([filmCleaned]);
       });
   });
-  // it('gets studio by id', async() => {
-  //   const studio = await Studio.create({
-  //     name: 'Firefly Studio',
-  //     address: {
-  //       city: 'Los Angeles',
-  //       state: 'California',
-  //       country: 'United States'
-  //     }
-  //   });
-  //   return request(app)
-  //     .get(`/api/v1/studios/${studio._id}`)
-  //     .then(res => {
-  //       const studioCleaned = JSON.parse(JSON.stringify(studio));
-  //       expect(res.body).toEqual(studioCleaned);
-  //     });
-  // });
-  // it('deletes studio', async() => {
-  //   const studio = await Studio.create({
-  //     name: 'Firefly Studio',
-  //     address: {
-  //       city: 'Los Angeles',
-  //       state: 'California',
-  //       country: 'United States'
-  //     }
-  //   });
-  //   return request(app)
-  //     .delete(`/api/v1/studios/${studio._id}`)
-  //     .then(res => {
-  //       const studioCleaned = JSON.parse(JSON.stringify(studio));
-  //       expect(res.body).toEqual(studioCleaned);
-  //     });
-  // });
+
+  it('gets film by id', async() => {
+    const film = await Film.create({
+      title: 'Awesome Sauce',
+      studio: studio._id,
+      released: 1990,
+      cast: [{
+        role: 'Derrick Strong',
+        actor: actor._id
+      }]
+    });
+    return request(app)
+      .get(`/api/v1/films/${film._id}`)
+      .then(res => {
+        const filmCleaned = JSON.parse(JSON.stringify(film));
+        expect(res.body).toEqual(filmCleaned);
+      });
+  });
+
+  it('deletes film', async() => {
+    const film = await Film.create({
+      title: 'Awesome Sauce',
+      studio: studio._id,
+      released: 1990,
+      cast: [{
+        role: 'Derrick Strong',
+        actor: actor._id
+      }]
+    });
+    return request(app)
+      .delete(`/api/v1/films/${film._id}`)
+      .then(res => {
+        const filmCleaned = JSON.parse(JSON.stringify(film));
+        expect(res.body).toEqual(filmCleaned);
+      });
+  });
 });
