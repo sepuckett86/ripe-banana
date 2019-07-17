@@ -4,6 +4,7 @@ const request = require('supertest');
 const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
+const Studio = require('../lib/models/Studio');
 
 describe('studio routes', () => {
   beforeAll(() => {
@@ -40,6 +41,24 @@ describe('studio routes', () => {
           },
           __v: 0
         });
+      });
+  });
+
+  it('gets studios', async() => {
+    const studio = await Studio.create({
+      name: 'Firefly Studio',
+      address: {
+        city: 'Los Angeles',
+        state: 'California',
+        country: 'United States'
+      }
+    });
+
+    return request(app)
+      .get('/api/v1/studios')
+      .then(res => {
+        const studioCleaned = JSON.parse(JSON.stringify(studio));
+        expect(res.body).toEqual([studioCleaned]);
       });
   });
 });
