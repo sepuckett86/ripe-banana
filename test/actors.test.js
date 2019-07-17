@@ -83,13 +83,13 @@ describe('studio routes', () => {
         expect(res.body).toEqual({
           _id: expect.any(String),
           name: 'Ellen Page',
-          dob: new Date('February 21, 1987'),
+          dob: new Date('February 21, 1987').toISOString(),
           pob: 'Halifax, Nova Scotia',
           __v: 0
         });
       });
   });
-  
+
   it('deletes actor', async() => {
     const actor = await Actor.create({
       name: 'Leonardo DiCaprio',
