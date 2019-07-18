@@ -5,6 +5,8 @@ const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 const Actor = require('../lib/models/Actor');
+const Film = require('../lib/models/Film');
+const Studio = require('../lib/models/Studio');
 
 describe('studio routes', () => {
   beforeAll(() => {
@@ -58,16 +60,51 @@ describe('studio routes', () => {
   });
 
   it('gets actor by id', async() => {
+    // {
+    //  name, dob, pob,
+    //  films: [{ id, title, released }]
+    // }
     const actor = await Actor.create({
       name: 'Leonardo DiCaprio',
       dob: new Date('November 11, 1974'),
       pob: 'Hollywood, California'
     });
+
+    const studio = await Studio.create({
+      name: 'Firefly Studio',
+      address: {
+        city: 'Los Angeles',
+        state: 'California',
+        country: 'United States'
+      }
+    });
+
+    const film = await Film.create({
+      title: 'Awesome Sauce',
+      studio: studio._id,
+      released: 1990,
+      cast: [{
+        role: 'Derrick Strong',
+        actor: actor._id
+      }]
+    });
+
     return request(app)
       .get(`/api/v1/actors/${actor._id}`)
       .then(res => {
         const actorCleaned = JSON.parse(JSON.stringify(actor));
-        expect(res.body).toEqual(actorCleaned);
+        const filmCleaned = JSON.parse(JSON.stringify(film));
+        expect(res.body).toEqual({
+          _id: actorCleaned._id,
+          name: actorCleaned.name,
+          dob: actorCleaned.dob,
+          pob: actorCleaned.pob,
+          films: [{
+            _id: filmCleaned._id,
+            title: filmCleaned.title,
+            released: filmCleaned.released
+          }]
+        });
       });
   });
   it('updates actor', async() => {
