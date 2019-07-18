@@ -13,9 +13,12 @@ describe('studio routes', () => {
     connect();
   });
 
+  beforeEach(() => {
+    return mongoose.connection.dropDatabase();
+  });
+  
   let actor = null;
   let studio = null;
-
   beforeEach(async() => {
     actor = JSON.parse(JSON.stringify(await Actor.create({
       name: 'Leonardo DiCaprio',
@@ -30,7 +33,6 @@ describe('studio routes', () => {
         country: 'United States'
       }
     })));
-    return mongoose.connection.dropDatabase();
   });
 
   afterAll(() => {
@@ -66,7 +68,7 @@ describe('studio routes', () => {
   });
 
   it('gets films', async() => {
-    const film = await Film.create({
+    await Film.create({
       title: 'Awesome Sauce',
       studio: studio._id,
       released: 1990,
@@ -79,8 +81,16 @@ describe('studio routes', () => {
     return request(app)
       .get('/api/v1/films')
       .then(res => {
-        const filmCleaned = JSON.parse(JSON.stringify(film));
-        expect(res.body).toEqual([filmCleaned]);
+        console.log(res.body[0]);
+        expect(res.body).toEqual([{
+          _id: expect.any(String),
+          title: 'Awesome Sauce',
+          studio: {
+            _id: expect.any(String),
+            name: 'Firefly Studio'
+          },
+          released: 1990
+        }]);
       });
   });
 
