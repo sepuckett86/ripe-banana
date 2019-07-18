@@ -81,7 +81,6 @@ describe('studio routes', () => {
     return request(app)
       .get('/api/v1/films')
       .then(res => {
-        console.log(res.body[0]);
         expect(res.body).toEqual([{
           _id: expect.any(String),
           title: 'Awesome Sauce',
