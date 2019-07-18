@@ -146,7 +146,7 @@ describe('studio routes', () => {
           },
           released: 1990,
           cast: [{
-            _id: film.cast._id,
+            _id: expect.any(String),
             role: 'Derrick Strong',
             actor: {
               _id: actor._id,
@@ -154,7 +154,7 @@ describe('studio routes', () => {
             }
           }],
           reviews: [{
-            id: review._id, 
+            _id: review._id, 
             rating: review.rating, 
             review: review.review,
             reviewer: {
