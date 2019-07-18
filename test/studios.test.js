@@ -128,4 +128,39 @@ describe('studio routes', () => {
         expect(res.body).toEqual(studioCleaned);
       });
   });
+
+  it('does not delete if there is a film with this studio', async() => {
+    const studio = await Studio.create({
+      name: 'Firefly Studio',
+      address: {
+        city: 'Los Angeles',
+        state: 'California',
+        country: 'United States'
+      }
+    });
+
+    const actor = await Actor.create({
+      name: 'Leonardo DiCaprio',
+      dob: new Date('November 11, 1974'),
+      pob: 'Hollywood, California'
+    });
+
+    await Film.create({
+      title: 'Awesome Sauce',
+      studio: studio._id,
+      released: 1990,
+      cast: [{
+        role: 'Derrick Strong',
+        actor: actor._id
+      }]
+    });
+
+    return request(app)
+      .delete(`/api/v1/studios/${studio._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          message: 'Could not delete studio because there is a film with this studio'
+        });
+      });
+  });
 });
