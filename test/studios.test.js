@@ -58,7 +58,10 @@ describe('studio routes', () => {
       .get('/api/v1/studios')
       .then(res => {
         const studioCleaned = JSON.parse(JSON.stringify(studio));
-        expect(res.body).toEqual([studioCleaned]);
+        expect(res.body).toEqual([{
+          _id: studioCleaned._id,
+          name: 'Firefly Studio',
+        }]);
       });
   });
   it('gets studio by id', async() => {
