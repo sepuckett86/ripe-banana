@@ -88,7 +88,7 @@ describe('reviews routes', () => {
     //  _id, rating, review,
     //  film: { _id, title }
     // }]
-    await Promise.all([...Array(101)].map((i) => {
+    await Promise.all([...Array(101)].map((review, i) => {
       return Review.create({
         rating: 5,
         reviewer: reviewer._id,
@@ -110,11 +110,11 @@ describe('reviews routes', () => {
     //  film: { _id, title }
     // }]
 
-    await Promise.all([...Array(101)].map(() => {
+    await Promise.all([...Array(101)].map((review, i) => {
       Review.create({
         rating: 5,
         reviewer: reviewer._id,
-        review: 'This movie is AWESOME',
+        review: `This movie is AWESOME ${i}`,
         film: film._id,
       });
     }));
@@ -125,7 +125,7 @@ describe('reviews routes', () => {
         expect(res.body[0]).toEqual({
           _id: expect.any(String),
           rating: 5,
-          review: 'This movie is AWESOME',
+          review: expect.any(String),
           film: film._id,
         });
       });
