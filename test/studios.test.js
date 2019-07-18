@@ -47,6 +47,7 @@ describe('studio routes', () => {
   });
 
   it('gets studios', async() => {
+    // [{ _id, name }]
     const studio = await Studio.create({
       name: 'Firefly Studio',
       address: {
@@ -110,7 +111,7 @@ describe('studio routes', () => {
         });
       });
   });
-  
+
   it('deletes studio', async() => {
     const studio = await Studio.create({
       name: 'Firefly Studio',

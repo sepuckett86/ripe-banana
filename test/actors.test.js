@@ -39,6 +39,7 @@ describe('studio routes', () => {
   });
 
   it('gets actors', async() => {
+    // [{ _id, name }]
     const actor = await Actor.create({
       name: 'Leonardo DiCaprio',
       dob: new Date('November 11, 1974'),
@@ -49,7 +50,10 @@ describe('studio routes', () => {
       .get('/api/v1/actors')
       .then(res => {
         const actorCleaned = JSON.parse(JSON.stringify(actor));
-        expect(res.body).toEqual([actorCleaned]);
+        expect(res.body).toEqual([{
+          _id: actorCleaned._id,
+          name: actorCleaned.name
+        }]);
       });
   });
 
