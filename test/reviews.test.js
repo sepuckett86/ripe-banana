@@ -67,20 +67,19 @@ describe('reviews routes', () => {
     };
 
     return request(app)
-      .post('/')
-      .send({})
+      .post('/api/v1/reviews')
+      .send(review)
       .then(res => {
-        const reviewCleaned = JSON.parse(JSON.stringify(review));
         const filmCleaned = JSON.parse(JSON.stringify(film));
         const reviewerCleaned = JSON.parse(JSON.stringify(reviewer));
         expect(res.body).toEqual({
-          _id: reviewCleaned._id,
+          _id: expect.any(String),
           rating: 5,
           reviewer: reviewerCleaned._id,
           review: 'This movie is AWESOME',
           film: filmCleaned._id,
-          createdAt: expect.any(Date),
-          updatedAt: expect.any(Date),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
           __v: 0
         });
       });
