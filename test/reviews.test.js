@@ -126,7 +126,10 @@ describe('reviews routes', () => {
           _id: expect.any(String),
           rating: 5,
           review: expect.any(String),
-          film: film._id,
+          film: {
+            _id: film._id,
+            title: film.title
+          },
         });
       });
   });
