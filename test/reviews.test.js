@@ -111,7 +111,7 @@ describe('reviews routes', () => {
     // }]
 
     await Promise.all([...Array(101)].map((review, i) => {
-      Review.create({
+      return Review.create({
         rating: 5,
         reviewer: reviewer._id,
         review: `This movie is AWESOME ${i}`,

@@ -70,14 +70,14 @@ describe('studio routes', () => {
 
   it('gets studio by id', async() => {
     // { _id, name, address, films: [{ _id, title }] }
-    const studio = await Studio.create({
+    const studio = JSON.parse(JSON.stringify(await Studio.create({
       name: 'Firefly Studio',
       address: {
         city: 'Los Angeles',
         state: 'California',
         country: 'United States'
       }
-    });
+    })));
 
     const actor = await Actor.create({
       name: 'Leonardo DiCaprio',
@@ -98,12 +98,11 @@ describe('studio routes', () => {
     return request(app)
       .get(`/api/v1/studios/${studio._id}`)
       .then(res => {
-        const studioCleaned = JSON.parse(JSON.stringify(studio));
         const filmCleaned = JSON.parse(JSON.stringify(film));
         expect(res.body).toEqual({
-          _id: studioCleaned._id,
-          name: studioCleaned.name,
-          address: studioCleaned.address,
+          _id: studio._id,
+          name: studio.name,
+          address: studio.address,
           films: [{
             _id: filmCleaned._id,
             title: filmCleaned.title

@@ -4,6 +4,10 @@ const request = require('supertest');
 const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
+const Studio = require('../lib/models/Studio');
+const Actor = require('../lib/models/Actor');
+const Film = require('../lib/models/Film');
+const Review = require('../lib/models/Review');
 const Reviewer = require('../lib/models/Reviewer');
 
 describe('studio routes', () => {
@@ -51,15 +55,60 @@ describe('studio routes', () => {
   });
 
   it('gets reviewer by id', async() => {
-    const reviewer = await Reviewer.create({
+    const reviewer = JSON.parse(JSON.stringify(await Reviewer.create({
       name: 'Andy Sandy',
       company: 'Rotten Tomatoes'
-    });
+    })));
+
+    const studio = JSON.parse(JSON.stringify(await Studio.create({
+      name: 'Firefly Studio',
+      address: {
+        city: 'Los Angeles',
+        state: 'California',
+        country: 'United States'
+      }
+    })));
+
+    const actor = JSON.parse(JSON.stringify(await Actor.create({
+      name: 'Leonardo DiCaprio',
+      dob: new Date('November 11, 1974'),
+      pob: 'Hollywood, California'
+    })));
+    
+    const film = JSON.parse(JSON.stringify(await Film.create({
+      title: 'Awesome Sauce',
+      studio: studio._id,
+      released: 1990,
+      cast: [{
+        role: 'Derrick Strong',
+        actor: actor._id
+      }]
+    })));
+
+    const review = JSON.parse(JSON.stringify(await Review.create({
+      rating: 5,
+      reviewer: reviewer._id,
+      review: 'This movie is AWESOME',
+      film: film._id,
+    })));
+
     return request(app)
       .get(`/api/v1/reviewers/${reviewer._id}`)
       .then(res => {
-        const reviewerCleaned = JSON.parse(JSON.stringify(reviewer));
-        expect(res.body).toEqual(reviewerCleaned);
+        expect(res.body).toEqual({
+          _id: reviewer._id,
+          name: 'Andy Sandy',
+          company: 'Rotten Tomatoes',
+          reviews: [{
+            _id: review._id, 
+            rating: review.rating, 
+            review: review.review,
+            film: { 
+              _id: film._id,
+              title: film.title 
+            }
+          }]
+        });
       });
   });
 
