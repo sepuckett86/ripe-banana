@@ -42,19 +42,18 @@ describe('studio routes', () => {
 
   it('gets actors', async() => {
     // [{ _id, name }]
-    const actor = await Actor.create({
+    const actor = JSON.parse(JSON.stringify(await Actor.create({
       name: 'Leonardo DiCaprio',
       dob: new Date('November 11, 1974'),
       pob: 'Hollywood, California'
-    });
+    })));
 
     return request(app)
       .get('/api/v1/actors')
       .then(res => {
-        const actorCleaned = JSON.parse(JSON.stringify(actor));
         expect(res.body).toEqual([{
-          _id: actorCleaned._id,
-          name: actorCleaned.name
+          _id: actor._id,
+          name: actor.name
         }]);
       });
   });
